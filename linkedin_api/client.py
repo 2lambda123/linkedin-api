@@ -73,7 +73,7 @@ class Client(object):
             f"{Client.LINKEDIN_BASE_URL}/uas/authenticate",
             headers=Client.AUTH_REQUEST_HEADERS,
             proxies=self.proxies,
-        )
+        timeout=60)
         return res.cookies
 
     def _set_session_cookies(self, cookies):
@@ -113,7 +113,7 @@ class Client(object):
             cookies=self.session.cookies,
             headers=Client.AUTH_REQUEST_HEADERS,
             proxies=self.proxies,
-        )
+        timeout=60)
 
         soup = BeautifulSoup(res.text, "lxml")
 
@@ -154,7 +154,7 @@ class Client(object):
             cookies=self.session.cookies,
             headers=Client.AUTH_REQUEST_HEADERS,
             proxies=self.proxies,
-        )
+        timeout=60)
 
         data = res.json()
 
