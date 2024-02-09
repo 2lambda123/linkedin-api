@@ -52,6 +52,20 @@ class Client(object):
     def __init__(
         self, *, debug=False, refresh_cookies=False, proxies={}, cookies_dir=None
     ):
+        """Initializes a Client object with optional parameters for debugging, refreshing cookies, proxies, and cookies directory.
+        Parameters:
+            - debug (bool): If True, sets the logging level to DEBUG. Default is False.
+            - refresh_cookies (bool): If True, disables the use of cookie cache. Default is False.
+            - proxies (dict): Dictionary of proxies to be used by the requests session.
+            - cookies_dir (str): Path to the directory where cookies will be stored.
+        Returns:
+            - None: This function does not return anything.
+        Processing Logic:
+            - Sets the logging level to DEBUG if debug is True.
+            - Disables the use of cookie cache if refresh_cookies is True.
+            - Initializes a CookieRepository object with the provided cookies_dir.
+            - Sets the requests session proxies and headers with the provided proxies and Client.REQUEST_HEADERS."""
+        
         self.session = requests.session()
         self.session.proxies.update(proxies)
         self.session.headers.update(Client.REQUEST_HEADERS)
@@ -87,9 +101,28 @@ class Client(object):
 
     @property
     def cookies(self):
+        """"Returns the cookies from the session object."
+        Parameters:
+            - self (object): The session object.
+        Returns:
+            - cookies (object): The cookies from the session object.
+        Processing Logic:
+            - Returns cookies from session object."""
+        
         return self.session.cookies
 
     def authenticate(self, username, password):
+        """Authenticate user with provided username and password.
+        Parameters:
+            - username (str): Username to authenticate with.
+            - password (str): Password to authenticate with.
+        Returns:
+            - None: No return value.
+        Processing Logic:
+            - If cookies are cached, use them.
+            - If no cookies are cached, authenticate with provided username and password.
+            - Fetch metadata after authentication."""
+        
         if self._use_cookie_cache:
             self.logger.debug("Attempting to use cached cookies")
             cookies = self._cookie_repository.get(username)
